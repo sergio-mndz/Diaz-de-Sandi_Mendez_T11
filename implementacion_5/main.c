@@ -62,7 +62,6 @@ int main(void)
 	FlexTimer_Init();
 
 	g_duty_cycle = 204;
-	printf("%d\n", g_duty_cycle);
 	while(1)
 	{
 

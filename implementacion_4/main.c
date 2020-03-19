@@ -15,29 +15,22 @@
 #include "NVIC.h"
 #include "stdint.h"
 #include "Bits.h"
+#include <stdio.h>
 
 uint16_t g_duty_cycle;
 
 void PORTA_handler(void)
 {
-	g_duty_cycle += 38;
 
-	if(g_duty_cycle < 0xFF)
-	{
-		FlexTimer_update_channel_value(g_duty_cycle);
-	}
+	FlexTimer_increment_channel_value(g_duty_cycle);
 
 	GPIO_clear_interrupt(GPIO_C);
 }
 
 void PORTC_handler(void)
 {
-	g_duty_cycle -= 12;
 
-	if(g_duty_cycle > 0)
-	{
-		FlexTimer_update_channel_value(g_duty_cycle);
-	}
+	FlexTimer_decrement_channel_value(g_duty_cycle);
 
 	GPIO_clear_interrupt(GPIO_A);
 }

@@ -16,10 +16,16 @@
 
 
 
-void FlexTimer_update_channel_value(int16_t channel_value)
+void FlexTimer_increment_channel_value(int16_t channel_value)
 {
 	/**Assigns a new value for the duty cycle*/
-	FTM0->CONTROLS[0].CnV = channel_value;
+	FTM0->SC = FTM0->SC*1.15;
+}
+
+void FlexTimer_decrement_channel_value(int16_t channel_value)
+{
+	/**Assigns a new value for the duty cycle*/
+	FTM0->SC = FTM0->SC*95;
 }
 
 
@@ -35,12 +41,12 @@ void FlexTimer_Init()
 	/**Enables the writing over all registers*/
 	FTM0->MODE &= ~ FTM_MODE_FTMEN_MASK;
 	/**Assigning a default value for modulo register*/
-	FTM0->MOD = 0x00FF;
+	FTM0->MOD = 0x0014;
 	/**Selects the Edge-Aligned PWM mode mode*/
 	FTM0->CONTROLS[0].CnSC = FTM_CnSC_MSB(1) | FTM_CnSC_ELSB(1);
 	/**Assign a duty cycle of 50%*/
-	FTM0->CONTROLS[0].CnV = FTM0->MOD/2;
+	FTM0->CONTROLS[0].CnV = 4*(FTM0->MOD/5);
 	/**Configure the times*/
-	FTM0->SC |= FTM_SC_CLKS(FLEX_TIMER_CLKS_1)| FTM_SC_PS(FLEX_TIMER_PS_128);
+	FTM0->SC |= FTM_SC_CLKS(FLEX_TIMER_CLKS_1)| FTM_SC_PS(FLEX_TIMER_PS_1);
 }
 

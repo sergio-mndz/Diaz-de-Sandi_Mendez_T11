@@ -39,7 +39,9 @@
 #define  FLEX_TIMER_CHF   0x80
 
 
-void FlexTimer_update_channel_value(int16_t channel_value);
+void FlexTimer_increment_channel_value(int16_t channel_value);
+
+void FlexTimer_decrement_channel_value(int16_t channel_value);
 
 void FlexTimer_Init();
 
