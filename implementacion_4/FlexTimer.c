@@ -19,13 +19,18 @@
 void FlexTimer_increment_channel_value(int16_t channel_value)
 {
 	/**Assigns a new value for the duty cycle*/
-	FTM0->SC = FTM0->SC*1.15;
+	if(FTM0->SC < 200){
+		FTM0->SC = FTM0->SC + 20;
+	}
 }
 
 void FlexTimer_decrement_channel_value(int16_t channel_value)
 {
 	/**Assigns a new value for the duty cycle*/
-	FTM0->SC = FTM0->SC*95;
+	if(FTM0->SC > 8){
+		FTM0->SC = FTM0->SC - 7;
+	}
+
 }
 
 
