@@ -1,10 +1,13 @@
 #include "FlexTimer.h"
 #include "MK64F12.h"
 
-void FTM0_ISR()
+
+
+void FTM0_ISR(int16_t channel_value)
 {
 
 }
+
 
 void FlexTimer_Init()
 {
@@ -17,7 +20,7 @@ void FlexTimer_Init()
 	/**Assign modulo register with a predefined value*/
 	FTM0->MOD = 0x05;
 	/**Configure FlexTimer in output compare in toggle mode*/
-	FTM0->CONTROLS[0].CnSC = FTM_CnSC_MSA(1) | FTM_CnSC_ELSA(1);
+	FTM0->CONTROLS[0].CnSC = FTM_CnSC_MSA(1) | FTM_CnSC_ELSA(2);
 	/**Assign channel value register with a predefined value*/
 	FTM0->CONTROLS[0].CnV = 0x03;
 	/**Select clock source and prescaler*/

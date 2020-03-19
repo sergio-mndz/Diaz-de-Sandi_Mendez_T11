@@ -9,10 +9,17 @@
 #include "bits.h"
 #include "GPIO.h"
 
-/*
- * @brief   Application entry point.
+/**
+ * Output compare frequency = (bus clock)/(Prescaler(mod+1)).
+ * Note that is the same frequency of the overflow flow.
  */
+
 int main(void) {
+	SIM->SCGC5 |= GPIO_CLOCK_GATING_PORTA | GPIO_CLOCK_GATING_PORTC;
+	PORTC->PCR[1]   = PORT_PCR_MUX(0x4);
+
+	FlexTimer_Init();
+
     while(1) {
 
     }
