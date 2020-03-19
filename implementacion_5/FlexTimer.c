@@ -25,22 +25,29 @@ void FlexTimer_update_channel_value(int16_t channel_value)
 
 void FlexTimer_Init()
 {
+		/**Clock gating for FlexTimer*/
+		SIM->SCGC6 = SIM_SCGC6_FTM0(3);
+		SIM->SCGC5 |= 0x3E00;
+		/**Selects the FTM behavior in BDM mode.In this case in functional mode*/
+		FTM0->CONF = FTM_CONF_BDMMODE(3);
+		FTM0->FMS = 0x00;
+		FTM0->MODE = 0x5;
+		FTM0->MOD = 1000;
+		FTM0->CONTROLS[0].CnSC = 0x28;
+		FTM0->CONTROLS[1].CnSC = 0x28;
+		FTM0->COMBINE = 0x02;
+		FTM0->COMBINE |= 0x10;
+		FTM0->DEADTIME = 0x1F;
+		FTM0->CONTROLS[0].CnV = 500;
+		FTM0->CONTROLS[1].CnV = 500;
+		FTM0->CNTIN = 0x00;
 
-
-	/**Clock gating for FlexTimer*/
-	SIM->SCGC6 |= SIM_SCGC6_FTM0(1);
-	/**When write protection is enabled (WPDIS = 0), write protected bits cannot be written.
-	* When write protection is disabled (WPDIS = 1), write protected bits can be written.*/
-	FTM0->MODE |= FTM_MODE_WPDIS_MASK;
-	/**Enables the writing over all registers*/
-	FTM0->MODE &= ~ FTM_MODE_FTMEN_MASK;
-	/**Assigning a default value for modulo register*/
-	FTM0->MOD = 0x00FF;
-	/**Selects the Edge-Aligned PWM mode mode*/
-	FTM0->CONTROLS[0].CnSC = FTM_CnSC_MSB(1) | FTM_CnSC_ELSB(1);
-	/**Assign a duty cycle of 50%*/
-	FTM0->CONTROLS[0].CnV = FTM0->MOD/2;
-	/**Configure the times*/
-	FTM0->SC |= FTM_SC_CLKS(FLEX_TIMER_CLKS_1)| FTM_SC_PS(FLEX_TIMER_PS_128);
+		FTM0->CONTROLS[2].CnSC = 0x28;
+		FTM0->CONTROLS[3].CnSC = 0x28;
+		FTM0->COMBINE |= 0x0200;
+		FTM0->COMBINE |= 0x1000;
+		FTM0->CONTROLS[3].CnV = 250;
+		FTM0->CONTROLS[2].CnV = 250;
+		FTM0->SC = 0x68;
 }
 
